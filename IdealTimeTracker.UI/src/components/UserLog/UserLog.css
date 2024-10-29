@@ -2,7 +2,8 @@
   display: flex;
   align-items: center;
   flex-wrap: wrap;
-  padding: 1rem 2rem;
+  justify-content: space-between;
+  padding: 1rem 1rem;
 }
 .log-date-container {
   margin-left: auto;
@@ -58,4 +59,9 @@
   padding: 10px;
   display: flex;
   justify-content: end;
+}
+
+.log-filter {
+  margin: auto;
+  padding-inline: 2rem;
 }

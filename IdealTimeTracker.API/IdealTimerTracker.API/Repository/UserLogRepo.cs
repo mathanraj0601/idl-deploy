@@ -36,7 +36,7 @@ namespace IdealTimeTracker.API.Repository
         {
             if (_userContext.UserLogs == null)
                 throw new ContextException("UserLogs context is Empty");
-            var userLogs = _userContext.UserLogs;
+            var userLogs = _userContext.UserLogs.Include(x=>x.UserActivity);
             if (userLogs == null)
                 throw new UserLogException("UserLogs not found");
             return await userLogs.ToListAsync();

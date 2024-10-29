@@ -10,6 +10,7 @@
             public int? ActivityId { get; set; }
             public TimeSpan Duration { get; set; }
             public DateTime ActivityAt { get; set; }
+            public DateTime? IdealAt { get; set; }
             public String? Reason { get; set; }
             public DateTime Date { get; set; }
 

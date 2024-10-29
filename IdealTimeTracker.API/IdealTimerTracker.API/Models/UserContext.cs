@@ -48,8 +48,9 @@ namespace IdealTimeTracker.API.Models
                   new UserActivity { Id = 2, Activity = "login", DurationInMins = 0, CountPerDay = null, IsActive = true },
                   new UserActivity { Id = 3, Activity = "logout", DurationInMins = 0, CountPerDay = null, IsActive = true, },
                   new UserActivity { Id = 4, Activity = "Others", DurationInMins = 0, CountPerDay = null, IsActive = true, },
-                  new UserActivity { Id = 5, Activity = "tea break", DurationInMins = 15, CountPerDay = 2, IsActive = true },
-                  new UserActivity { Id = 6, Activity = "lunch break", DurationInMins = 30, CountPerDay = 2, IsActive = true });
+                  new UserActivity { Id = 5, Activity = "ShiftLogin", DurationInMins = 0, CountPerDay = null, IsActive = true, },
+                  new UserActivity { Id = 7, Activity = "tea break", DurationInMins = 15, CountPerDay = 2, IsActive = true },
+                  new UserActivity { Id = 8, Activity = "lunch break", DurationInMins = 30, CountPerDay = 2, IsActive = true });
 
             modelBuilder.Entity<ApplicationConfiguration>().HasData(
                 new ApplicationConfiguration { Id = 1, Name = "IDEAL TIME", Value = new TimeSpan(0, 5, 0) },

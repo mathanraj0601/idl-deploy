@@ -34,7 +34,8 @@ namespace IdealTimeTracker.API.Services
                 Date = log.Date.Date,
                 Duration =  log.Duration,
                 EmpId = log.EmpId,
-                Reason = log.Reason
+                Reason = log.Reason,
+                IdealAt = log.IdealAt
             }).ToList();
             var existingUser = await _userRepo.GetAll();
             var updatelogs = userLogs.Where((log) => existingUser.Select(x => x.EmpId).Contains(log.EmpId)).ToList();

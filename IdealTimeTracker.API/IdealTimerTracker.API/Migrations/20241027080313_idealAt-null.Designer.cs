@@ -4,6 +4,7 @@ using IdealTimeTracker.API.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace IdealTImeTracker.API.Migrations
 {
     [DbContext(typeof(UserContext))]
-    partial class UserContextModelSnapshot : ModelSnapshot
+    [Migration("20241027080313_idealAt-null")]
+    partial class idealAtnull
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -120,8 +122,8 @@ namespace IdealTImeTracker.API.Migrations
                             Name = "Admin User",
                             PassWord = "ADMIN",
                             Role = "admin",
-                            createdOn = new DateTime(2024, 10, 27, 13, 34, 54, 3, DateTimeKind.Local).AddTicks(6624),
-                            modifiedOn = new DateTime(2024, 10, 27, 13, 34, 54, 3, DateTimeKind.Local).AddTicks(6606)
+                            createdOn = new DateTime(2024, 10, 27, 13, 33, 13, 210, DateTimeKind.Local).AddTicks(1890),
+                            modifiedOn = new DateTime(2024, 10, 27, 13, 33, 13, 210, DateTimeKind.Local).AddTicks(1873)
                         },
                         new
                         {
@@ -132,8 +134,8 @@ namespace IdealTImeTracker.API.Migrations
                             Name = "Super manager User",
                             PassWord = "SUPERMANAGER",
                             Role = "manager",
-                            createdOn = new DateTime(2024, 10, 27, 13, 34, 54, 3, DateTimeKind.Local).AddTicks(6631),
-                            modifiedOn = new DateTime(2024, 10, 27, 13, 34, 54, 3, DateTimeKind.Local).AddTicks(6629)
+                            createdOn = new DateTime(2024, 10, 27, 13, 33, 13, 210, DateTimeKind.Local).AddTicks(1895),
+                            modifiedOn = new DateTime(2024, 10, 27, 13, 33, 13, 210, DateTimeKind.Local).AddTicks(1894)
                         });
                 });
 

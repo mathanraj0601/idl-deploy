@@ -146,7 +146,8 @@ function UserActivity() {
                         activities[index].id == 1 ||
                         activities[index].id == 2 ||
                         activities[index].id == 3 ||
-                        activities[index].id == 4
+                        activities[index].id == 4 ||
+                        activities[index].id == 5
                           ? "table-action-disabled"
                           : "table-action"
                       }
@@ -155,7 +156,8 @@ function UserActivity() {
                           activities[index].id == 1 ||
                           activities[index].id == 2 ||
                           activities[index].id == 3 ||
-                          activities[index].id == 4
+                          activities[index].id == 4 ||
+                          activities[index].id == 5
                         ) && handleEdit(index)
                       }
                     >
@@ -166,7 +168,8 @@ function UserActivity() {
                         activities[index].id == 1 ||
                         activities[index].id == 2 ||
                         activities[index].id == 3 ||
-                        activities[index].id == 4
+                        activities[index].id == 4 ||
+                        activities[index].id == 5
                           ? "table-action-disabled"
                           : "table-action"
                       }
@@ -175,7 +178,8 @@ function UserActivity() {
                           activities[index].id == 1 ||
                           activities[index].id == 2 ||
                           activities[index].id == 3 ||
-                          activities[index].id == 4
+                          activities[index].id == 4 ||
+                          activities[index].id == 5
                         ) && handleDelete(index)
                       }
                     >

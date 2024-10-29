@@ -4,6 +4,7 @@ using IdealTimeTracker.API.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace IdealTImeTracker.API.Migrations
 {
     [DbContext(typeof(UserContext))]
-    partial class UserContextModelSnapshot : ModelSnapshot
+    [Migration("20241027062536_shiftlogin")]
+    partial class shiftlogin
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -120,8 +122,8 @@ namespace IdealTImeTracker.API.Migrations
                             Name = "Admin User",
                             PassWord = "ADMIN",
                             Role = "admin",
-                            createdOn = new DateTime(2024, 10, 27, 13, 34, 54, 3, DateTimeKind.Local).AddTicks(6624),
-                            modifiedOn = new DateTime(2024, 10, 27, 13, 34, 54, 3, DateTimeKind.Local).AddTicks(6606)
+                            createdOn = new DateTime(2024, 10, 27, 11, 55, 35, 648, DateTimeKind.Local).AddTicks(5881),
+                            modifiedOn = new DateTime(2024, 10, 27, 11, 55, 35, 648, DateTimeKind.Local).AddTicks(5867)
                         },
                         new
                         {
@@ -132,8 +134,8 @@ namespace IdealTImeTracker.API.Migrations
                             Name = "Super manager User",
                             PassWord = "SUPERMANAGER",
                             Role = "manager",
-                            createdOn = new DateTime(2024, 10, 27, 13, 34, 54, 3, DateTimeKind.Local).AddTicks(6631),
-                            modifiedOn = new DateTime(2024, 10, 27, 13, 34, 54, 3, DateTimeKind.Local).AddTicks(6629)
+                            createdOn = new DateTime(2024, 10, 27, 11, 55, 35, 648, DateTimeKind.Local).AddTicks(5887),
+                            modifiedOn = new DateTime(2024, 10, 27, 11, 55, 35, 648, DateTimeKind.Local).AddTicks(5885)
                         });
                 });
 
@@ -229,9 +231,6 @@ namespace IdealTImeTracker.API.Migrations
                     b.Property<string>("EmpId")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("IdealAt")
-                        .HasColumnType("datetime2");
 
                     b.Property<string>("Reason")
                         .HasColumnType("nvarchar(max)");

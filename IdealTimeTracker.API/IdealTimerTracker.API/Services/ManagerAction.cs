@@ -3,8 +3,10 @@ using IdealTimeTracker.API.Models;
 using IdealTimeTracker.API.Models.DTOs.Userlog;
 using IdealTimeTracker.API.Models.DTOs.Users;
 using IdealTImeTracker.API.Interfaces;
+using IdealTImeTracker.API.Migrations;
 using IdealTImeTracker.API.Models.DTOs;
 using IdealTImeTracker.API.Models.DTOs.Userlog;
+using IdealTImeTracker.API.Utils;
 
 namespace IdealTimeTracker.API.Services
 {
@@ -161,6 +163,114 @@ namespace IdealTimeTracker.API.Services
                 })
                 .ToList();
 
+        }
+
+        public async Task<UserLogFilterResponsePaginationDTO> GetFilterLogsForUserPagination(GetUserLogFilterDTO getUserLogFilterDTO)
+        {
+            var logs = await GetFilterLogsForUser(getUserLogFilterDTO);
+            const int Pagesize = 5;
+            var totalPages = (logs.Count + Pagesize - 1) / Pagesize;
+            UserLogFilterResponsePaginationDTO userLogFilterResponsePaginationDTO = new();
+            userLogFilterResponsePaginationDTO.CurrentPage = getUserLogFilterDTO.PageNumber;
+            userLogFilterResponsePaginationDTO.TotalPages = totalPages;
+            userLogFilterResponsePaginationDTO.logs = logs.Skip(Pagesize * (getUserLogFilterDTO.PageNumber - 1)).Take(Pagesize).ToList();
+            return userLogFilterResponsePaginationDTO;
+        }
+
+        public async Task<List<UserLogFilterResponseDTO>> GetFilterLogsForUser(GetUserLogFilterDTO getUserLogFilterDTO)
+        {
+            var userlogs = await _userLogRepo.GetAll();
+            var filteredLogs = userlogs.
+                Where(x => x.EmpId == getUserLogFilterDTO.EmpId &&
+                          x.ActivityAt > getUserLogFilterDTO.From &&
+                          x.ActivityAt < getUserLogFilterDTO.To 
+                );
+
+            var AllShiftStart = filteredLogs.Where(x => x.ActivityId == Constants.ShiftActivityID).OrderBy(x=>x.ActivityAt).ToList();
+            if (!AllShiftStart.Any()) return new List<UserLogFilterResponseDTO>();
+
+
+            List<UserLogFilterResponseDTO> userLogFilterResponseDTOs = new List<UserLogFilterResponseDTO>();
+            for(int i = 0 ; i < AllShiftStart.Count() ; i++)
+            {
+                UserLogFilterResponseDTO userLogFilterResponseDTO = new UserLogFilterResponseDTO();
+
+                if (i == AllShiftStart.Count() - 1)
+                {
+                    var log = filteredLogs.
+                    Where(x => x.ActivityAt > AllShiftStart[i].ActivityAt).ToList();
+                    if (!log.Any()) continue;
+                    var res = new UserLogFilterResponseDTO
+                    {
+                        BreakHours = new TimeSpan(log.
+                             Where(x => x.ActivityId != Constants.LoginActivityID &&
+                                       x.ActivityId != Constants.ShiftActivityID
+                             ).
+                             Sum(x => TimeSpan.FromMinutes(x.UserActivity.DurationInMins).Ticks)),
+                        Breaks = log.Where(x => x.ActivityId != Constants.LoginActivityID &&
+                                   x.ActivityId != Constants.ShiftActivityID && 
+                                   x.ActivityId != Constants.LogoutActivityID
+                             ).
+                             Select(x => new UserLogBreakDTO
+                             {
+                                 Duration = TimeSpan.FromMinutes( x.UserActivity.DurationInMins),
+                                 From = x.IdealAt ?? x.ActivityAt.AddMinutes(-x.UserActivity.DurationInMins),
+                                 To = x.ActivityAt,
+                                 Reason = x.UserActivity.Activity + " " + x.Reason
+                             }).OrderBy(x=>x.From).ToList(),
+                        EmpId = getUserLogFilterDTO.EmpId,
+                        EmpName = getUserLogFilterDTO.EmpName,
+                        CheckIn = AllShiftStart[i].ActivityAt,
+                        CheckOut = log.Last().ActivityAt,
+                        Date = AllShiftStart[i].ActivityAt.Date,
+                        WorkingHours = log.Any() ? log.Max(x => x.Duration) : TimeSpan.Zero,
+                    };
+                    userLogFilterResponseDTOs.Add(res
+                        
+                    );
+                }
+                else
+                {
+                    var log = filteredLogs.
+                    Where(x => x.ActivityAt > AllShiftStart[i].ActivityAt &&
+                               x.ActivityAt < AllShiftStart[i + 1].ActivityAt).ToList();
+                    if (!log.Any()) continue;
+                    userLogFilterResponseDTOs.Add( 
+                       new UserLogFilterResponseDTO
+                        {
+                           BreakHours = new TimeSpan(log.
+                             Where(x => x.ActivityId != Constants.LoginActivityID &&
+                                       x.ActivityId != Constants.ShiftActivityID
+                             ).
+                             Sum(x => TimeSpan.FromMinutes(x.UserActivity.DurationInMins).Ticks)),
+                           Breaks = log.Where(x => x.ActivityId != Constants.LoginActivityID &&
+                                       x.ActivityId != Constants.ShiftActivityID &&
+                                   x.ActivityId != Constants.LogoutActivityID
+                             ).
+                             Select(x => new UserLogBreakDTO
+                             {
+                                Duration = TimeSpan.FromMinutes( x.UserActivity.DurationInMins),
+                                 From = x.IdealAt ?? x.ActivityAt.AddMinutes(-x.UserActivity.DurationInMins),
+                                 To = x.ActivityAt,
+                                 Reason = $"{x.UserActivity.Activity} {(x.Reason is not null ? '-' : string.Empty)} {x.Reason ?? string.Empty} "
+                             }).OrderBy(x => x.From).ToList(),
+                           WorkingHours = log.Any() ? log.Max(x => x.Duration) : TimeSpan.Zero,
+                            EmpId = getUserLogFilterDTO.EmpId,
+                            EmpName = getUserLogFilterDTO.EmpName,
+                            CheckIn = AllShiftStart[i].ActivityAt,
+                            CheckOut = AllShiftStart[i+1].ActivityAt,
+                            Date = AllShiftStart[i].ActivityAt.Date,
+                        }
+                   );
+
+                }
+              
+            }
+
+            return userLogFilterResponseDTOs.
+                Where(x => x.BreakHours >= TimeSpan.FromHours(getUserLogFilterDTO.BreakHours) && 
+                           x.WorkingHours >= TimeSpan.FromHours(getUserLogFilterDTO.WorkingHours))
+                .ToList();
         }
     }
 }

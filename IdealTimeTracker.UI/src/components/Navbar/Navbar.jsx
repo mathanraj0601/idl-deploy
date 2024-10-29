@@ -31,8 +31,8 @@ function Navbar({ role }) {
       case "manager":
         nav = [
           { title: "Logs", navLink: "/log" },
-          { title: "consolidate", navLink: "/consolidate" },
-          { title: "Detail", navLink: "/detail" },
+          // { title: "consolidate", navLink: "/consolidate" },
+          // { title: "Detail", navLink: "/detail" },
         ];
         break;
       default:

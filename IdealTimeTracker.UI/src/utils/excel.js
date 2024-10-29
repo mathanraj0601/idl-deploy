@@ -57,36 +57,34 @@ export const exportDataToExcel = async (
     // Add Data Rows
     for (const [index, product] of data.entries()) {
       const rowData = { ...product };
-      if (type === excelTypeAll) {
-        rowData.status =
-          product.durationInMins > workingHours ? "PRESENT" : "ABSENT";
-      }
       rowData.sno = index + 1;
-      sheet.addRow(rowData); // Clone product object to avoid mutations
+      const newRow = sheet.addRow(rowData); // Clone product object to avoid mutations
+      newRow.height = 80;
+      // Clone product object to avoid mutations
     }
 
-    if (type === excelTypeAll) {
-      const statusCol = sheet.getColumn("status"); // Get the "status" column
-      statusCol.eachCell((cell, rowNumber) => {
-        if (rowNumber > 1) {
-          // Skip header row
-          const cellValue = sheet.getCell(cell.address).value;
-          if (cellValue === "Absent") {
-            cell.fill = {
-              type: "pattern",
-              pattern: "solid",
-              fgColor: { argb: "FF0000" },
-            }; // Red for Absent
-          } else if (cellValue === "Present") {
-            cell.fill = {
-              type: "pattern",
-              pattern: "solid",
-              fgColor: { argb: "00FF00" },
-            }; // Green for Present
-          }
-        }
-      });
-    }
+    // if (type === excelTypeAll) {
+    //   const statusCol = sheet.getColumn("status"); // Get the "status" column
+    //   statusCol.eachCell((cell, rowNumber) => {
+    //     if (rowNumber > 1) {
+    //       // Skip header row
+    //       const cellValue = sheet.getCell(cell.address).value;
+    //       if (cellValue === "Absent") {
+    //         cell.fill = {
+    //           type: "pattern",
+    //           pattern: "solid",
+    //           fgColor: { argb: "FF0000" },
+    //         }; // Red for Absent
+    //       } else if (cellValue === "Present") {
+    //         cell.fill = {
+    //           type: "pattern",
+    //           pattern: "solid",
+    //           fgColor: { argb: "00FF00" },
+    //         }; // Green for Present
+    //       }
+    //     }
+    //   });
+    // }
 
     const buffer = await workbook.xlsx.writeBuffer();
     const blob = new Blob([buffer], {
@@ -100,5 +98,6 @@ export const exportDataToExcel = async (
     window.URL.revokeObjectURL(url);
   } catch (error) {
     // Handle export errors gracefully (e.g., display an error message)
+    console.log(error);
   }
 };

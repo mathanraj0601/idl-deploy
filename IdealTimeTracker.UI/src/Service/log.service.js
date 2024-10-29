@@ -15,3 +15,9 @@ export const getCondolidatedLogsExcel = (payload) =>
 
 export const getDetailLogForUser = (payload) =>
   axios.post(`${BASE_URL}/UserLog/details`, payload);
+
+export const getFilterLogForUser = (payload) =>
+  axios.post(`${BASE_URL}/UserLog/filter`, payload);
+
+export const getFilterLogForUserExcel = (payload) =>
+  axios.post(`${BASE_URL}/UserLog/filter/excel`, payload);

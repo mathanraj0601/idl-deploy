@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
 
 namespace IdealTimeTracker.API.Models
 {
@@ -17,6 +18,8 @@ namespace IdealTimeTracker.API.Models
         public UserActivity? UserActivity { get; set; }
         public TimeSpan Duration { get; set; }
         public DateTime ActivityAt { get; set; }
+        [AllowNull]
+        public DateTime? IdealAt { get; set; } = null;
         public DateTime Date { get; set; }
 
     }

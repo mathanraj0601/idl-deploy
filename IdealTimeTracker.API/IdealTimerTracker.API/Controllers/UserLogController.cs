@@ -99,6 +99,32 @@ namespace IdealTimeTracker.API.Controllers
         }
 
 
+        [AllowAnonymous]
+        [HttpPost("filter")]
+        [ProducesResponseType(typeof(UserLogFilterResponsePaginationDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(Error), StatusCodes.Status400BadRequest)]
+        public async Task<ActionResult<UserLogFilterResponsePaginationDTO>> GetFilterLogsForUserPagination(GetUserLogFilterDTO getUserLogFilterDTO)
+        {
+            _logger.LogInformation("GetDetailLogsForUser called with {0}", getUserLogFilterDTO);
+            var userLogs = await _managerAction.GetFilterLogsForUserPagination(getUserLogFilterDTO);
+            _logger.LogInformation($"GetDetailLogsForUser: {userLogs}");
+            return Ok(userLogs);
+        }
+
+
+        [AllowAnonymous]
+        [HttpPost("filter/excel")]
+        [ProducesResponseType(typeof(List<UserLogFilterResponseDTO>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(Error), StatusCodes.Status400BadRequest)]
+        public async Task<ActionResult<List<UserLogFilterResponseDTO>>> GetFilterLogsForUser(GetUserLogFilterDTO getUserLogFilterDTO)
+        {
+            _logger.LogInformation("GetDetailLogsForUser called with {0}", getUserLogFilterDTO);
+            var userLogs = await _managerAction.GetFilterLogsForUser(getUserLogFilterDTO);
+            _logger.LogInformation($"GetDetailLogsForUser: {userLogs}");
+            return Ok(userLogs);
+        }
+
+
     }
 
 }

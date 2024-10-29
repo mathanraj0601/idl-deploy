@@ -12,6 +12,9 @@ namespace IdealTimeTracker.API.Interfaces
         public Task<List<UserLogResponseDTO>> GetAllLogsForUserExcel(GetUserLogDTO getUserLogDTO);
         public Task<List<UserLogConsolidatedResponseDTO>> GetConsolatedLogsForUserExcel(GetUserLogDTO getUserLogDTO);
         public Task<List<UserLogDetailResponseDto>> GetDetailLogsForUser(GetUserLogDetailDto getUserLogDetailDto);
+        public Task<List<UserLogFilterResponseDTO>> GetFilterLogsForUser(GetUserLogFilterDTO getUserLogFilterDTO);
+        public Task<UserLogFilterResponsePaginationDTO> GetFilterLogsForUserPagination(GetUserLogFilterDTO getUserLogFilterDTO);
+
 
 
     }
